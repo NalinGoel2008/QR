@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Viewer</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.199/pdf.js"></script>
+</head>
+<body>
+    <div id="pdf-container"></div>
+    <script>
+        const pdfUrl = 'https://drive.google.com/file/d/1CqjwvF4skf1iDc1XUr5IjjA2pLcJ2iHH/view?usp=sharing'; // Replace with your PDF URL
+        const pdfContainer = document.getElementById('pdf-container');
+
+        pdfjsLib.getDocument(pdfUrl).promise.then(function (pdfDoc) {
+            pdfDoc.getPage(1).then(function (page) {
+                const canvas = document.createElement('canvas');
+                const context = canvas.getContext('2d');
+                const viewport = page.getViewport({ scale: 1.0 });
+                canvas.width = viewport.width;
+                canvas.height = viewport.height;
+                pdfContainer.appendChild(canvas);
+                page.render({
+                    canvasContext: context,
+                    viewport: viewport,
+                });
+            });
+        }).catch(function (error) {
+            console.error('Error loading PDF:', error);
+        });
+    </script>
+</body>
+</html>
